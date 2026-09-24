@@ -1,0 +1,138 @@
+
+/* Custom Base Styles */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text Glow Effects */
+.title-glow {
+    filter: drop-shadow(0 0 8px rgba(192, 38, 211, 0.8)) drop-shadow(0 0 20px rgba(6, 182, 212, 0.6));
+}
+
+/* Board Styling */
+.board-container {
+    background: linear-gradient(135deg, rgba(30,58,138,0.2) 0%, rgba(15,23,42,0.6) 100%);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cell {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #0f172a; /* Same as body bg to simulate holes */
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.6), inset 0 -2px 4px rgba(255,255,255,0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect on columns (applied to cells via JS classes or pseudo-elements) */
+.cell-hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Discs */
+.disc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.4), inset 0 4px 8px rgba(255,255,255,0.3);
+    z-index: 10;
+    transform: translateY(-500%);
+}
+
+.disc.color-red {
+    background: radial-gradient(circle at 30% 30%, #fca5a5, #ef4444, #b91c1c); /* Red */
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.5), inset 0 4px 8px rgba(255,255,255,0.4), 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+.disc.color-yellow {
+    background: radial-gradient(circle at 30% 30%, #fde047, #eab308, #a16207); /* Yellow */
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.5), inset 0 4px 8px rgba(255,255,255,0.4), 0 0 15px rgba(234, 179, 8, 0.5);
+}
+
+/* Animation for dropping */
+@keyframes drop {
+    0% { transform: translateY(-500%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+    50% { transform: translateY(0%); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    65% { transform: translateY(-30%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+    80% { transform: translateY(0%); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    90% { transform: translateY(-10%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+    100% { transform: translateY(0%); }
+}
+
+.disc.dropped {
+    animation: drop 0.6s forwards;
+}
+
+/* Winning highlight */
+.disc.winner {
+    animation: pulse-glow 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.5)); transform: scale(1); }
+    50% { filter: brightness(1.5) drop-shadow(0 0 25px rgba(255,255,255,0.9)); transform: scale(1.05); }
+    100% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.5)); transform: scale(1); }
+}
+
+/* UI active states */
+.active-turn-red {
+    border-color: #ef4444 !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+}
+
+.active-turn-yellow {
+    border-color: #eab308 !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 20px rgba(234, 179, 8, 0.2);
+}
+
+/* Custom Scrollbar for Modal */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Utility to show game over modal gracefully */
+#modal-game-over:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+#modal-game-over:not(.hidden) .glass-panel {
+    transform: scale(1);
+}
